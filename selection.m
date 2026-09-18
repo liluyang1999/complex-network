@@ -1,25 +1,10 @@
-%% Binary Tournament Selection
-function parents = selection(population, parentSize)
-    popSize = size(population, 2);
-    fitValues = fitness(population);
-    parents = cell(1, parentSize);
-
-    % Randomly select two individuals and choose one with higher fitness as
-    % the parent each time until reaching the required parents size
-    for i = 1 : parentSize
-        while true
-            R1 = randi(popSize);
-            R2 = randi(popSize);
-            if R1 ~= R2
-                break;
-            end
-        end
-        % If fitness of R1 is higher than R2, choose R1, otherwise choose R2
-        if fitValues(1, R1) >= fitValues(1, R2)
-            parents{1, i} = population{1, R1};
-        else
-            parents{1, i} = population{1, R2};
-        end
-    end
+function parents = selection(population, parentSize, values)
+%SELECTION Scalar tournament; pass cached values to select the intended objective.
+population = cn.population(population);
+if nargin < 3, values = fitness(population); end
+if numel(values) ~= numel(population) || any(~isfinite(values(:)))
+    error('cn:InvalidFitness', 'One finite fitness value per individual is required.');
 end
-
+indices = cn.tournament(ones(1, numel(population)), values, parentSize);
+parents = population(indices);
+end

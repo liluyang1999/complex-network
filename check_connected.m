@@ -1,17 +1,6 @@
 function connected = check_connected(G)
-    % Check whether the graph is connected
-    % G: adjacency matrix of graph
-    % return: 1/true(G is connected), 0/false(G is not connected)
-   
-    graph_G = graph(G);
-    
-    shortestPaths = distances(graph_G);
-
-    if all(shortestPaths ~= inf) == true 
-        connected = true;
-    else
-        connected = false;
-    end
-
+%CHECK_CONNECTED Singleton is connected; an empty or malformed graph is rejected.
+G = cn.adjacency(G);
+components = conncomp(graph(G));
+connected = all(components == components(1));
 end
-

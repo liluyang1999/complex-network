@@ -1,9 +1,5 @@
-function linkNum = cal_link_num(G)
-    % Calculate the total number of links of the graph
-    % G: adjacency matrix of the graph
-    % return: total number of links
-    
-    linkPosVec = find(G == 1);
-    linkNum = size(linkPosVec, 1) / 2;
-
+function value = cal_link_num(G)
+%CAL_LINK_NUM Count each undirected edge once without computing shortest paths.
+G = cn.adjacency(G);
+value = nnz(triu(G, 1));
 end
